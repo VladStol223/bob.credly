@@ -3,8 +3,12 @@
   IBM Bob — Credly Badge Setup Guide
   ─────────────────────────────────────────────────────────────────────────────
   Slide deck format matching the CE 2.0 index.html style.
-  6 slides — one per step to claim a Credly badge after completing a track.
-  No build step, no framework — single HTML file.
+  4 slides total:
+  Slide 1: Cover / Overview
+  Slide 2: Steps 1 & 2 (Download via Bob + Install from VSIX)
+  Slide 3: Steps 3 & 4 (Activate Extension with API Key + Switch to Auditor Mode)
+  Slide 4: Steps 5 & 6 (Open Fresh Chat + Start Badge Audit Prompt)
+  Progressive step-by-step reveal on Next / Arrow keys.
 -->
 <html lang="en">
 <head>
@@ -53,15 +57,15 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:var(--sans);backgro
 
 .slide-inner{
   position:relative;z-index:1;height:100%;
-  padding:6vh 7vw 9vh 7vw;
+  padding:4.5vh 5.5vw 8.5vh 5.5vw;
   display:flex;flex-direction:column;overflow:hidden;
 }
 
-/* ── STEP PROGRESS (replaces cluttered corner labels) ── */
+/* ── STEP TRACK HEADER ── */
 .step-track{
-  display:flex;align-items:center;gap:6px;flex-shrink:0;margin-bottom:3.2vh;
+  display:flex;align-items:center;gap:6px;flex-shrink:0;margin-bottom:1.8vh;
 }
-.step-track .tick{width:22px;height:3px;border-radius:2px;background:var(--ibm-cg20);}
+.step-track .tick{width:22px;height:3px;border-radius:2px;background:var(--ibm-cg20);transition:background .25s;}
 .step-track .tick.done{background:var(--gold);}
 .step-track .tick.now{background:var(--ibm-blue);}
 .s-dark .step-track .tick{background:rgba(255,255,255,.18);}
@@ -82,184 +86,197 @@ h1.hero-title{
 }
 h1.hero-accent{
   font-family:var(--mono);font-size:clamp(2.2rem,4.8vw,4.4rem);font-weight:600;
-  line-height:1.1;letter-spacing:-.02em;color:var(--gold);margin-bottom:4.5vh;
+  line-height:1.1;letter-spacing:-.02em;color:var(--gold);margin-bottom:4vh;
 }
 h2.slide-heading{
-  font-family:var(--sans);font-size:clamp(1.7rem,2.9vw,2.5rem);font-weight:600;
+  font-family:var(--sans);font-size:clamp(1.4rem,2.2vw,2rem);font-weight:600;
   letter-spacing:-.01em;line-height:1.2;color:var(--t1);
 }
 .s-dark h2.slide-heading{color:#fff;}
-.body-text{font-family:var(--sans);font-size:clamp(1.02rem,1.3vw,1.18rem);line-height:1.65;color:var(--t2);max-width:62ch;}
+.body-text{font-family:var(--sans);font-size:clamp(.88rem,1.08vw,1rem);line-height:1.55;color:var(--t2);}
 .s-dark .body-text{color:rgba(255,255,255,.78);}
-.caption{font-family:var(--sans);font-size:clamp(.8rem,.95vw,.9rem);color:var(--t3);line-height:1.5;}
+.caption{font-family:var(--sans);font-size:clamp(.75rem,.9vw,.85rem);color:var(--t3);line-height:1.45;}
 .s-dark .caption{color:rgba(255,255,255,.5);}
 
-/* ── STEP NUMBER BADGE ── */
+/* ── STEP BADGES & CARDS ── */
 .step-badge{
   display:flex;align-items:center;justify-content:center;
-  width:44px;height:44px;border-radius:50%;flex-shrink:0;
-  font-family:var(--mono);font-size:1.15rem;font-weight:700;color:#fff;
+  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  font-family:var(--mono);font-size:.95rem;font-weight:700;color:#fff;
   background:var(--gold);
 }
 
-/* ── STEP CARD (single-step content wrapper) ── */
 .step-card{
   background:#fff;
   border:1px solid var(--ibm-cg20);
   border-top:3px solid var(--gold);
-  border-radius:2px;
-  padding:1.9rem 2.2rem;
+  border-radius:3px;
+  padding:1.1rem 1.3rem;
   flex:1;
-  overflow:auto;
+  overflow-y:auto;
   display:flex;
   flex-direction:column;
-  gap:1.3vh;
-  box-shadow:0 1px 2px rgba(0,0,0,.04);
+  gap:.7vh;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
 }
+
+/* ── PROGRESSIVE REVEAL PANELS ── */
+.step-panel{
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  transition:opacity .35s ease, transform .35s ease, filter .35s ease;
+}
+.step-panel.step-hidden{
+  opacity:0;
+  pointer-events:none;
+  transform:translateY(16px);
+}
+.step-panel.step-visible{
+  opacity:1;
+  pointer-events:all;
+  transform:translateY(0);
+}
+
+.step-card-header{
+  display:flex;align-items:center;gap:.7rem;flex-shrink:0;margin-bottom:.3vh;
+}
+.step-card-title{
+  font-family:var(--sans);font-size:clamp(1.05rem,1.3vw,1.22rem);font-weight:600;
+  color:var(--t1);line-height:1.2;
+}
+
+/* ── MINI GIF WITHIN STEP SPACE ── */
+.mini-gif-container{
+  margin-top:.4rem;display:flex;flex-direction:column;gap:.25rem;flex-shrink:0;
+}
+.mini-gif-label{
+  font-family:var(--mono);font-size:.7rem;font-weight:600;color:var(--t3);
+  text-transform:uppercase;letter-spacing:.05em;
+}
+.mini-gif-area{
+  border-radius:3px;overflow:hidden;background:var(--ibm-cg10);
+  border:1px solid var(--ibm-cg20);height:145px;
+  display:flex;align-items:center;justify-content:center;
+}
+.mini-gif-area img{width:100%;height:100%;object-fit:contain;display:block;}
 
 /* ── INSTRUCTION LIST ── */
 .inst-list{
   font-family:var(--sans);
-  font-size:clamp(.94rem,1.15vw,1.06rem);
+  font-size:clamp(.86rem,1.02vw,.94rem);
   color:var(--t2);
-  display:flex;flex-direction:column;gap:.75rem;
+  display:flex;flex-direction:column;gap:.45rem;
   counter-reset:step;
 }
-.inst-list.arrows{list-style:none;}
-.inst-list.arrows li{padding-left:1.5rem;position:relative;line-height:1.55;}
-.inst-list.arrows li::before{content:'—';position:absolute;left:0;color:var(--gold);font-weight:700;}
 .inst-list.numbered{list-style:none;counter-reset:step;}
 .inst-list.numbered li{
-  counter-increment:step;padding-left:2.1rem;position:relative;line-height:1.55;
+  counter-increment:step;padding-left:1.8rem;position:relative;line-height:1.45;
 }
 .inst-list.numbered li::before{
   content:counter(step);position:absolute;left:0;top:.05em;
-  width:1.4rem;height:1.4rem;border-radius:50%;background:var(--ibm-cg10);
+  width:1.25rem;height:1.25rem;border-radius:50%;background:var(--ibm-cg10);
   border:1px solid var(--ibm-cg20);color:var(--t1);
-  font-family:var(--mono);font-size:.72rem;font-weight:700;
+  font-family:var(--mono);font-size:.68rem;font-weight:700;
   display:flex;align-items:center;justify-content:center;
 }
 
-/* ── CODE INLINE ── */
+/* ── CODE & CALLOUT BOXES ── */
 code{
   font-family:var(--mono);
-  font-size:.88em;
+  font-size:.86em;
   background:rgba(0,0,0,.06);
-  padding:.15rem .4rem;
+  padding:.12rem .35rem;
   border-radius:3px;
   color:var(--ibm-black);
 }
-.s-dark code{background:rgba(255,255,255,.14);color:#fff;}
-
-/* ── CALLOUT BOXES ── */
 .callout{
-  display:flex;align-items:flex-start;gap:.6rem;
+  display:flex;align-items:flex-start;gap:.55rem;
   background:#edf5ff;border-left:4px solid var(--ibm-blue);
-  padding:.85rem 1.1rem;border-radius:2px;
-  font-family:var(--sans);font-size:clamp(.86rem,1.02vw,.96rem);
-  color:var(--t1);line-height:1.55;
+  padding:.65rem .85rem;border-radius:2px;
+  font-family:var(--sans);font-size:clamp(.8rem,.94vw,.88rem);
+  color:var(--t1);line-height:1.45;
 }
-.callout svg{flex-shrink:0;margin-top:.2em;}
+.callout svg{flex-shrink:0;margin-top:.15em;}
 .callout-gold{background:var(--gold-l);border-left-color:var(--gold);color:var(--gold-d);}
 .callout-green{background:#defbe6;border-left-color:#24a148;color:#053922;}
 
-/* ── GIF / VISUAL AREA ── */
-.gif-area{
-  border-radius:4px;overflow:hidden;background:var(--ibm-cg10);
-  border:1px solid var(--ibm-cg20);flex:1;min-height:0;
-  display:flex;align-items:center;justify-content:center;
-}
-.gif-area img{width:100%;height:100%;object-fit:contain;display:block;max-height:100%;}
-.gif-label{
-  font-family:var(--mono);font-size:clamp(.7rem,.82vw,.78rem);font-weight:600;
-  color:var(--t3);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;
-}
-
-/* ── INTERACTIVE / REVEAL BOXES ── */
+/* ── REVEAL BOX & BUTTONS ── */
 .reveal-box{
-  margin-top:.8rem;border:1px solid var(--ibm-cg20);border-radius:4px;
-  background:#fff;padding:.8rem 1rem;
+  margin-top:.4rem;border:1px solid var(--ibm-cg20);border-radius:3px;
+  background:#fff;padding:.6rem .8rem;
 }
 .reveal-btn{
-  font-family:var(--mono);font-size:.82rem;font-weight:600;
+  font-family:var(--mono);font-size:.78rem;font-weight:600;
   background:var(--ibm-blue);color:#fff;border:none;border-radius:3px;
-  padding:.45rem .85rem;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;
+  padding:.35rem .7rem;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem;
   transition:background .15s ease;
 }
 .reveal-btn:hover{background:#0353e9;}
-.reveal-btn.expired{
-  background:#da1e28;cursor:not-allowed;
-}
+.reveal-btn.expired{background:#da1e28;cursor:not-allowed;}
 .reveal-content{
-  margin-top:.7rem;padding-top:.7rem;border-top:1px dashed var(--ibm-cg20);
+  margin-top:.5rem;padding-top:.5rem;border-top:1px dashed var(--ibm-cg20);
   display:none;
 }
 .reveal-content.open{display:block;}
 .countdown-badge{
-  display:inline-flex;align-items:center;gap:.35rem;font-family:var(--mono);
-  font-size:.78rem;font-weight:600;color:var(--ibm-navy);background:#e0eefe;
-  padding:.25rem .55rem;border-radius:3px;margin-bottom:.4rem;
+  display:inline-flex;align-items:center;gap:.3rem;font-family:var(--mono);
+  font-size:.74rem;font-weight:600;color:var(--ibm-navy);background:#e0eefe;
+  padding:.2rem .45rem;border-radius:3px;
 }
-.countdown-badge.expired{
-  background:#ffebee;color:#da1e28;
-}
+.countdown-badge.expired{background:#ffebee;color:#da1e28;}
 .copy-btn{
-  font-family:var(--mono);font-size:.75rem;padding:.25rem .55rem;
+  font-family:var(--mono);font-size:.72rem;padding:.22rem .5rem;
   background:var(--ibm-cg10);border:1px solid var(--ibm-cg20);
-  border-radius:3px;cursor:pointer;margin-left:.5rem;color:var(--ibm-black);
+  border-radius:3px;cursor:pointer;color:var(--ibm-black);
   transition:all .15s ease;
 }
 .copy-btn:hover{background:var(--ibm-cg20);}
 
 /* ── COVER HERO ── */
-.hero-list{list-style:none;display:flex;flex-direction:column;gap:.7rem;counter-reset:hero;}
+.hero-list{list-style:none;display:flex;flex-direction:column;gap:.6rem;counter-reset:hero;}
 .hero-list li{
   counter-increment:hero;
-  font-family:var(--sans);font-size:clamp(.92rem,1.15vw,1.05rem);font-weight:400;
-  color:rgba(255,255,255,.88);line-height:1.5;padding-left:2rem;position:relative;
+  font-family:var(--sans);font-size:clamp(.9rem,1.1vw,1.02rem);font-weight:400;
+  color:rgba(255,255,255,.88);line-height:1.45;padding-left:2rem;position:relative;
 }
 .hero-list li::before{
   content:counter(hero);position:absolute;left:0;top:.05em;
-  width:1.4rem;height:1.4rem;border-radius:50%;background:rgba(240,171,0,.16);
+  width:1.3rem;height:1.3rem;border-radius:50%;background:rgba(240,171,0,.16);
   border:1px solid rgba(240,171,0,.5);color:var(--gold);
-  font-family:var(--mono);font-size:.7rem;font-weight:700;
+  font-family:var(--mono);font-size:.68rem;font-weight:700;
   display:flex;align-items:center;justify-content:center;
 }
 
-/* ── STEP HEADER (icon + title, shared by content slides) ── */
-.step-header{display:flex;align-items:center;gap:1.1rem;flex-shrink:0;margin-bottom:2.6vh;}
+/* ── STEP HEADER ── */
+.step-header{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;margin-bottom:1.4vh;}
 
-/* ── TWO-COL LAYOUT ── */
-.cols-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,4vw,4.5rem);flex:1;overflow:hidden;}
-.col{display:flex;flex-direction:column;overflow:hidden;}
-.col-title{
-  font-family:var(--mono);font-size:clamp(.68rem,.82vw,.78rem);font-weight:700;
-  letter-spacing:.06em;color:var(--ibm-cg50);margin-bottom:.9vh;
-}
+/* ── TWO-COL LAYOUT (2 steps per page) ── */
+.cols-2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(1.2rem,2.2vw,2.4rem);flex:1;overflow:hidden;}
 
-/* Footer credit — quiet, single instance of brand chrome */
+/* ── FOOTER CREDIT ── */
 .slide-footer{
-  position:absolute;bottom:2.4vh;left:7vw;right:7vw;
+  position:absolute;bottom:2vh;left:5.5vw;right:5.5vw;
   display:flex;justify-content:space-between;align-items:center;
   font-family:var(--mono);font-size:.68rem;color:var(--t3);
 }
 .s-dark .slide-footer{color:rgba(255,255,255,.4);}
 
-/* ── NAV ── */
+/* ── NAV PILL ── */
 #nav{
-  position:fixed;bottom:clamp(12px,2.5vh,32px);left:50%;transform:translateX(-50%);
+  position:fixed;bottom:clamp(10px,2vh,28px);left:50%;transform:translateX(-50%);
   z-index:200;display:flex;flex-direction:column;border-radius:14px;
-  background:rgba(255,255,255,0.72);
+  background:rgba(255,255,255,0.78);
   backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
   -webkit-backdrop-filter:blur(28px) saturate(180%) brightness(1.04);
-  border:1px solid rgba(0,0,0,0.10);
-  box-shadow:0 2px 16px rgba(0,0,0,0.14),0 0 0 0.5px rgba(255,255,255,0.6) inset,0 1px 0 rgba(255,255,255,0.8) inset;
+  border:1px solid rgba(0,0,0,0.12);
+  box-shadow:0 2px 16px rgba(0,0,0,0.14),0 0 0 0.5px rgba(255,255,255,0.6) inset;
   transition:opacity .3s,transform .3s;overflow:hidden;white-space:nowrap;
   max-width:calc(100vw - 24px);min-width:fit-content;
 }
 #nav.hidden{opacity:0.2;pointer-events:none;transform:translateX(-50%) translateY(4px);}
 #nav.hidden:hover{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0);}
-.nav-bottom{display:flex;align-items:center;gap:4px;padding:5px 8px;}
+.nav-bottom{display:flex;align-items:center;gap:4px;padding:4px 8px;}
 .nav-brand{
   font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
   color:rgba(30,30,30,0.75);padding:0 10px 0 4px;border-right:1px solid rgba(0,0,0,.12);
@@ -278,21 +295,20 @@ code{
   width:6px;height:6px;border-radius:50%;background:rgba(240,171,0,.35);
   cursor:pointer;transition:background .2s,width .2s,opacity .2s;flex-shrink:0;opacity:.6;
 }
-.nav-dot.active{width:18px;border-radius:3px;opacity:1;background:var(--gold);}
+.nav-dot.active{width:16px;border-radius:3px;opacity:1;background:var(--gold);}
 .nav-dot:hover:not(.active){opacity:.85;}
 .nav-counter{
   font-family:var(--mono);font-size:10px;font-weight:400;color:rgba(22,22,22,.5);
-  padding:0 6px 0 4px;white-space:nowrap;user-select:none;min-width:34px;
+  padding:0 6px 0 4px;white-space:nowrap;user-select:none;min-width:44px;
   text-align:center;flex-shrink:0;
 }
 .nav-sep{width:1px;height:16px;background:rgba(0,0,0,.1);flex-shrink:0;}
 
 /* ── RESPONSIVE ── */
-@media (max-width:820px), (max-aspect-ratio: 4/5){
-  .slide-inner{padding:5vh 5.5vw 11vh 5.5vw;}
-  .cols-2{grid-template-columns:1fr;gap:1.6vh;overflow:auto;}
-  .gif-area{min-height:160px;}
-  h1.hero-accent{margin-bottom:3vh;}
+@media (max-width:860px), (max-aspect-ratio: 4/5){
+  .slide-inner{padding:4vh 4.5vw 10vh 4.5vw;}
+  .cols-2{grid-template-columns:1fr;gap:1.4vh;overflow-y:auto;}
+  .mini-gif-area{height:120px;}
   .slide-footer{display:none;}
 }
 </style>
@@ -301,19 +317,18 @@ code{
 <div id="deck">
 
 <!-- ═══════════════════════════════════════
-     SLIDE 1 — COVER
+     SLIDE 1 — COVER / INTRO
 ═══════════════════════════════════════ -->
-<section class="slide s-dark" id="slide-1">
+<section class="slide s-dark active" id="slide-1">
   <div class="slide-inner" style="justify-content:center;max-width:72%;">
     <div class="eyebrow">IBM Bob · Tech Week ATL</div>
     <h1 class="hero-title">How to claim your</h1>
     <h1 class="hero-accent">Credly Badge</h1>
     <ol class="hero-list">
-      <li>Install the VS Code badging extension</li>
-      <li>Activate it with the event API key</li>
-      <li>Switch to Badge Auditor mode in Bob</li>
-      <li>Run the audit prompt for your track</li>
-      <li>Credly sends your badge by email</li>
+      <li>Download &amp; install the VS Code badging extension</li>
+      <li>Activate the extension with the Bobathon event API key</li>
+      <li>Switch into Bob Badge Auditor mode in a fresh chat</li>
+      <li>Run the Bobathon audit prompt &amp; Credly issues your badge</li>
     </ol>
   </div>
   <div class="slide-footer">
@@ -323,137 +338,149 @@ code{
 </section>
 
 <!-- ═══════════════════════════════════════
-     SLIDE 2 — STEP 1: Download the extension via Bob
+     SLIDE 2 — PAGE 1: STEPS 1 & 2
 ═══════════════════════════════════════ -->
 <section class="slide s-light" id="slide-2">
   <div class="slide-inner">
     <div class="step-track">
-      <div class="tick now"></div><div class="tick"></div><div class="tick"></div>
-      <div class="tick"></div><div class="tick"></div><div class="tick"></div>
-      <span class="step-label">STEP 1 OF 6</span>
-    </div>
-    <div class="step-header">
-      <div class="step-badge">1</div>
-      <h2 class="slide-heading">Install the badging extension</h2>
+      <div class="tick done" id="tick-1"></div>
+      <div class="tick" id="tick-2"></div>
+      <div class="tick" id="tick-3"></div>
+      <div class="tick" id="tick-4"></div>
+      <div class="tick" id="tick-5"></div>
+      <div class="tick" id="tick-6"></div>
+      <span class="step-label" id="page-1-label">PAGE 1 OF 3 · STEPS 1–2</span>
     </div>
 
-    <div class="step-card" style="max-width:720px;">
-      <p class="body-text"><strong>Step 1:</strong> Copy the download prompt below and <strong>paste it directly into your Bob chat</strong>. Bob will download the <code>bob-badge-ext-0.0.6.vsix</code> extension file straight into your workspace.</p>
-
-      <div class="callout callout-gold" style="margin-top:.8rem;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-        <div style="width:100%;">
-          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
-            <strong style="color:var(--gold-d);display:flex;align-items:center;gap:6px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              COPY &amp; PASTE THIS PROMPT INTO BOB
-            </strong>
-            <button class="copy-btn" onclick="copyInstallPrompt(this)" style="background:var(--gold);color:#000;font-weight:700;border:none;padding:.35rem .75rem;cursor:pointer;">Copy Prompt</button>
+    <div class="cols-2">
+      <!-- Step 1: Left -->
+      <div class="step-panel step-visible" id="step-panel-1">
+        <div class="step-card" style="border-top-color:var(--gold);">
+          <div class="step-card-header">
+            <div class="step-badge">1</div>
+            <h3 class="step-card-title">Download Badging Extension</h3>
           </div>
-          <pre id="install-prompt" style="font-family:var(--mono);font-size:.84rem;white-space:pre-wrap;background:#fff;border:1px solid rgba(0,0,0,.08);padding:.85rem;border-radius:3px;margin-top:.5rem;line-height:1.6;color:var(--t1);">Please download the file at https://vladstol223.github.io/techweek.bob/bob-badge-ext-0.0.6.vsix and save it as bob-badge-ext-0.0.6.vsix in the current workspace directory. Once the file is saved, confirm it is present and tell me you are ready for the next step.</pre>
+          <p class="body-text">Copy and <strong>paste this prompt directly into your Bob chat</strong>. Bob will download <code>bob-badge-ext-0.0.6.vsix</code> straight into your workspace folder.</p>
+
+          <div class="callout callout-gold" style="margin-top:.3rem;">
+            <div style="width:100%;">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+                <strong style="color:var(--gold-d);font-size:.78rem;display:flex;align-items:center;gap:4px;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  PROMPT TO PASTE INTO BOB
+                </strong>
+                <button class="copy-btn" onclick="copyInstallPrompt(this)" style="background:var(--gold);color:#000;font-weight:700;border:none;">Copy Prompt</button>
+              </div>
+              <pre id="install-prompt" style="font-family:var(--mono);font-size:.76rem;white-space:pre-wrap;background:#fff;border:1px solid rgba(0,0,0,.08);padding:.55rem;border-radius:3px;margin-top:.35rem;line-height:1.45;color:var(--t1);">Please download the file at https://vladstol223.github.io/techweek.bob/bob-badge-ext-0.0.6.vsix and save it as bob-badge-ext-0.0.6.vsix in the current workspace directory. Once the file is saved, confirm it is present and tell me you are ready for the next step.</pre>
+            </div>
+          </div>
+
+          <p class="caption" style="margin-top:auto;">Once Bob confirms the file is downloaded, advance to reveal Step 2.</p>
         </div>
       </div>
 
-      <p class="body-text" style="margin-top:auto;color:var(--t3);font-size:.95rem;">Once Bob responds and confirms the <code>bob-badge-ext-0.0.6.vsix</code> file is saved in your workspace, advance to Step 2.</p>
+      <!-- Step 2: Right -->
+      <div class="step-panel step-hidden" id="step-panel-2">
+        <div class="step-card" style="border-top-color:var(--ibm-blue);">
+          <div class="step-card-header">
+            <div class="step-badge" style="background:var(--ibm-blue);">2</div>
+            <h3 class="step-card-title">Install from VSIX</h3>
+          </div>
+          <p class="body-text">Install the downloaded extension package from VS Code Extensions panel:</p>
+          <ol class="inst-list numbered">
+            <li>Open the <strong>Extensions</strong> panel (puzzle icon on left)</li>
+            <li>Click <strong>⋯ (More Actions)</strong> at top right</li>
+            <li>Select <strong>Install from VSIX…</strong></li>
+            <li>Select <code>bob-badge-ext-0.0.6.vsix</code> &amp; let Bob reload</li>
+          </ol>
+
+          <div class="mini-gif-container">
+            <div class="mini-gif-label">Walkthrough: Install from VSIX</div>
+            <div class="mini-gif-area">
+              <img src="./vsix-install.gif" alt="Walkthrough: Installing VSIX extension in Bob"/>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════════════════════════════════════
-     SLIDE 3 — STEP 2: Install VSIX from Extensions panel
+     SLIDE 3 — PAGE 2: STEPS 3 & 4
 ═══════════════════════════════════════ -->
 <section class="slide s-surf" id="slide-3">
   <div class="slide-inner">
     <div class="step-track">
-      <div class="tick done"></div><div class="tick now"></div><div class="tick"></div>
-      <div class="tick"></div><div class="tick"></div><div class="tick"></div>
-      <span class="step-label">STEP 2 OF 6</span>
-    </div>
-    <div class="step-header">
-      <div class="step-badge">2</div>
-      <h2 class="slide-heading">Install the extension in Bob</h2>
-    </div>
-
-    <div class="cols-2">
-      <div class="col">
-        <div class="step-card" style="border-top-color:var(--ibm-blue);">
-          <p class="body-text" style="margin-bottom:.4vh;">Once Bob has saved the file, install it from the Extensions panel:</p>
-          <ol class="inst-list numbered">
-            <li>Open the <strong>Extensions</strong> panel — the puzzle-piece icon in the left sidebar</li>
-            <li>Click <strong>⋯ More Actions</strong> in the top-right of the panel</li>
-            <li>Select <strong>Install from VSIX…</strong></li>
-            <li>Choose <code>bob-badge-ext-0.0.6.vsix</code> from your workspace folder</li>
-            <li>Bob will reload — the badging skill is now installed</li>
-          </ol>
-        </div>
-      </div>
-      <div class="col">
-        <div class="col-title">WALKTHROUGH</div>
-        <div class="gif-label">Install from VSIX</div>
-        <div class="gif-area">
-          <img src="./vsix-install.gif" alt="Animated walkthrough: how to install a VSIX extension in Bob"/>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════
-     SLIDE 4 — STEP 3: Activate extension & enter API key
-═══════════════════════════════════════ -->
-<section class="slide s-light" id="slide-4">
-  <div class="slide-inner">
-    <div class="step-track">
-      <div class="tick done"></div><div class="tick done"></div><div class="tick now"></div>
-      <div class="tick"></div><div class="tick"></div><div class="tick"></div>
-      <span class="step-label">STEP 3 OF 6</span>
-    </div>
-    <div class="step-header">
-      <div class="step-badge">3</div>
-      <h2 class="slide-heading">Activate the extension &amp; enter your API key</h2>
+      <div class="tick done"></div>
+      <div class="tick done"></div>
+      <div class="tick done" id="tick-3-status"></div>
+      <div class="tick" id="tick-4-status"></div>
+      <div class="tick"></div>
+      <div class="tick"></div>
+      <span class="step-label" id="page-2-label">PAGE 2 OF 3 · STEPS 3–4</span>
     </div>
 
     <div class="cols-2">
-      <div class="col">
-        <div class="step-card">
-          <p class="body-text">After Bob reloads, click the <strong>IBM Bob Badge Issuer</strong> icon in the left sidebar.</p>
-          <ol class="inst-list numbered" style="margin-top:.4vh;">
-            <li>Press <strong>Enter</strong> when Bob prompts you</li>
-            <li>Enter the Bobathon Event API key below to unlock credential issuance</li>
-          </ol>
-          
+      <!-- Step 3: Left -->
+      <div class="step-panel step-visible" id="step-panel-3">
+        <div class="step-card" style="border-top-color:var(--gold);">
+          <div class="step-card-header">
+            <div class="step-badge">3</div>
+            <h3 class="step-card-title">Activate &amp; Enter API Key</h3>
+          </div>
+          <p class="body-text">Click the <strong>IBM Bob Badge Issuer</strong> icon in the left sidebar, press <strong>Enter</strong> when prompted, and enter your event API key:</p>
+
           <div class="reveal-box">
-            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;">
               <span id="countdown-status" class="countdown-badge">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                 <span id="countdown-timer">Checking event window...</span>
               </span>
               <button id="toggle-key-btn" class="reveal-btn" onclick="toggleApiKey()">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1-1l-3 3M11 7l-1.5-1.5a4.95 4.95 0 00-7 7l1.5 1.5 8-8m5 3l2 2m-2-2l-3-3"/></svg>
-                <span id="key-btn-text">Reveal Event API Key</span>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1-1l-3 3M11 7l-1.5-1.5a4.95 4.95 0 00-7 7l1.5 1.5 8-8m5 3l2 2m-2-2l-3-3"/></svg>
+                <span id="key-btn-text">Reveal Event Key</span>
               </button>
             </div>
             
             <div id="key-content" class="reveal-content">
-              <div style="font-family:var(--mono);font-size:.78rem;color:var(--t2);margin-bottom:.3rem;">BOBATHON EVENT API KEY:</div>
-              <div style="display:flex;align-items:center;background:var(--ibm-cg10);padding:.4rem .6rem;border-radius:3px;border:1px solid var(--ibm-cg20);">
-                <code id="api-key-text" style="font-size:.92rem;font-weight:700;color:var(--ibm-blue);background:none;padding:0;">bob-badge-apikey-wx2026</code>
-                <button class="copy-btn" onclick="copyApiKey(this)">Copy Key</button>
+              <div style="font-family:var(--mono);font-size:.72rem;color:var(--t2);margin-bottom:.25rem;">BOBATHON EVENT API KEY:</div>
+              <div style="display:flex;align-items:center;background:var(--ibm-cg10);padding:.35rem .5rem;border-radius:3px;border:1px solid var(--ibm-cg20);">
+                <code id="api-key-text" style="font-size:.86rem;font-weight:700;color:var(--ibm-blue);background:none;padding:0;">bob-badge-apikey-wx2026</code>
+                <button class="copy-btn" onclick="copyApiKey(this)" style="margin-left:auto;">Copy</button>
               </div>
             </div>
           </div>
 
-          <div class="callout" style="margin-top:auto;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-            <span>All Bobathon attendees are eligible for the badge. Reveal and paste this key into the prompt box.</span>
+          <div class="mini-gif-container">
+            <div class="mini-gif-label">Walkthrough: Activating Extension</div>
+            <div class="mini-gif-area">
+              <img src="./badge-issuer-installer.gif" alt="Walkthrough: Activating the badge extension"/>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col">
-        <div class="col-title">WALKTHROUGH</div>
-        <div class="gif-label">Activate the extension &amp; enter the API key</div>
-        <div class="gif-area">
-          <img src="./badge-issuer-installer.gif" alt="Animated walkthrough: activating the badge extension and entering the API key"/>
+
+      <!-- Step 4: Right -->
+      <div class="step-panel step-hidden" id="step-panel-4">
+        <div class="step-card" style="border-top-color:var(--ibm-blue);">
+          <div class="step-card-header">
+            <div class="step-badge" style="background:var(--ibm-blue);">4</div>
+            <h3 class="step-card-title">Switch Mode to Badge Auditor</h3>
+          </div>
+          <p class="body-text">Use the <strong>mode picker</strong> at the bottom-left of your Bob chat panel to switch into <strong>Bob Badge Auditor</strong> mode.</p>
+          
+          <div class="callout callout-gold" style="margin-top:.4rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span>This gives Bob the specific tools and instructions to verify your session and issue your Credly badge.</span>
+          </div>
+
+          <div class="mini-gif-container" style="margin-top:auto;">
+            <div class="mini-gif-label">Walkthrough: Switching Mode</div>
+            <div class="mini-gif-area">
+              <img src="./agent_switch.gif" alt="Walkthrough: Switching modes in Bob"/>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -461,100 +488,69 @@ code{
 </section>
 
 <!-- ═══════════════════════════════════════
-     SLIDE 5 — STEPS 4 & 5: Switch mode + Open new chat
+     SLIDE 4 — PAGE 3: STEPS 5 & 6
 ═══════════════════════════════════════ -->
-<section class="slide s-surf" id="slide-5">
+<section class="slide s-gold" id="slide-4">
   <div class="slide-inner">
     <div class="step-track">
-      <div class="tick done"></div><div class="tick done"></div><div class="tick done"></div>
-      <div class="tick now"></div><div class="tick now"></div><div class="tick"></div>
-      <span class="step-label">STEPS 4–5 OF 6</span>
-    </div>
-    <div class="step-header">
-      <div class="step-badge" style="font-size:.85rem;">4–5</div>
-      <h2 class="slide-heading">Switch mode &amp; open a fresh chat</h2>
+      <div class="tick done"></div>
+      <div class="tick done"></div>
+      <div class="tick done"></div>
+      <div class="tick done"></div>
+      <div class="tick done" id="tick-5-status"></div>
+      <div class="tick" id="tick-6-status"></div>
+      <span class="step-label" id="page-3-label">PAGE 3 OF 3 · STEPS 5–6</span>
     </div>
 
     <div class="cols-2">
-      <!-- Step 4 -->
-      <div class="col">
-        <div class="col-title">STEP 4 · SWITCH MODE</div>
+      <!-- Step 5: Left -->
+      <div class="step-panel step-visible" id="step-panel-5">
         <div class="step-card" style="border-top-color:var(--ibm-blue);">
-          <p class="body-text">Use the <strong>mode picker</strong> at the bottom-left of the chat panel to switch Bob into <strong>Bob Badge Auditor</strong> mode.</p>
-          <div class="gif-label" style="margin-top:auto;">How to switch modes in Bob</div>
-          <div class="gif-area" style="flex:0 0 55%;">
-            <img src="./agent_switch.gif" alt="Animated demo showing how to switch modes in Bob"/>
+          <div class="step-card-header">
+            <div class="step-badge" style="background:var(--ibm-blue);">5</div>
+            <h3 class="step-card-title">Open a Fresh Chat</h3>
           </div>
-        </div>
-      </div>
-
-      <!-- Step 5 -->
-      <div class="col">
-        <div class="col-title">STEP 5 · NEW CHAT</div>
-        <div class="step-card">
-          <p class="body-text">Before pasting the audit prompt, start a <strong>fresh chat</strong> in Bob.</p>
-          <ol class="inst-list numbered">
-            <li>Click the <strong>✕</strong> in the top-right of the chat panel — next to the blue bobcoin spend button</li>
+          <p class="body-text">Before running the badging audit prompt, start a <strong>clean chat session</strong>:</p>
+          <ol class="inst-list numbered" style="margin-top:.2rem;">
+            <li>Click the <strong>✕ (New Chat)</strong> icon in the top-right corner of the chat panel.</li>
+            <li>Confirm you are in a blank conversation with <strong>Bob Badge Auditor</strong> selected.</li>
           </ol>
+
           <div class="callout callout-gold" style="margin-top:auto;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-            <span>A clean chat keeps prior conversation from confusing the auditor, so your badge evaluation stays accurate.</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+            <span>Starting fresh clears out token clutter so your badging evaluation and prompt work seamlessly.</span>
           </div>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ═══════════════════════════════════════
-     SLIDE 6 — STEP 6: Start the Badge Audit
-═══════════════════════════════════════ -->
-<section class="slide s-gold" id="slide-6">
-  <div class="slide-inner">
-    <div class="step-track">
-      <div class="tick done"></div><div class="tick done"></div><div class="tick done"></div>
-      <div class="tick done"></div><div class="tick done"></div><div class="tick now"></div>
-      <span class="step-label">STEP 6 OF 6</span>
-    </div>
-    <div class="step-header">
-      <div class="step-badge">6</div>
-      <h2 class="slide-heading">Start the badge audit</h2>
-    </div>
-
-    <div class="step-card" style="border-top-color:var(--gold);max-width:720px;overflow-y:auto;max-height:calc(100vh - 220px);">
-      <p class="body-text">You're in <strong>Bob Badge Auditor mode</strong> in a fresh chat. Copy and paste the Bobathon badge audit prompt below into Bob.</p>
-      
-      <div class="callout callout-gold" style="margin-top:.6rem;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-        <div style="width:100%;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <strong>Bobathon Initial Badging Prompt</strong>
-            <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+      <!-- Step 6: Right -->
+      <div class="step-panel step-hidden" id="step-panel-6">
+        <div class="step-card" style="border-top-color:var(--gold);">
+          <div class="step-card-header">
+            <div class="step-badge">6</div>
+            <h3 class="step-card-title">Run Badge Audit Prompt</h3>
           </div>
-          <pre id="badging-prompt" style="font-family:var(--mono);font-size:.82rem;white-space:pre-wrap;background:#fff;border:1px solid rgba(0,0,0,.08);padding:.8rem;border-radius:3px;margin-top:.5rem;line-height:1.55;color:var(--t1);">You are the Bob Badge Auditor for this Bobathon event.
+          <p class="body-text">Copy the Bobathon badging prompt below and paste it into your fresh chat:</p>
+          
+          <div class="callout callout-gold" style="margin-top:.2rem;">
+            <div style="width:100%;">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+                <strong style="color:var(--gold-d);font-size:.76rem;">BOBATHON BADGING PROMPT</strong>
+                <button class="copy-btn" onclick="copyPrompt(this)" style="background:var(--gold);color:#000;font-weight:700;border:none;">Copy Prompt</button>
+              </div>
+              <pre id="badging-prompt" style="font-family:var(--mono);font-size:.72rem;white-space:pre-wrap;background:#fff;border:1px solid rgba(0,0,0,.08);padding:.5rem;border-radius:3px;margin-top:.3rem;line-height:1.45;color:var(--t1);">You are the Bob Badge Auditor for this Bobathon event.
 
 Your objective:
 1. Check the workspace directories and project files to inspect and summarize the participant's progress and work.
 2. Regardless of specific track milestones or partial completion, because the user is participating in this live Bobathon event, they have fully earned their Credly badge.
 3. Prompt the user for their full name and email address to issue their Credly badge, and execute the badge issuance tool.</pre>
-        </div>
-      </div>
+            </div>
+          </div>
 
-      <div class="callout callout-green" style="margin-top:.8rem;">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-        <span><strong>What happens next:</strong> Bob checks your directories and progress, confirms your badge status as an event participant, and issues your Credly badge. Check your email for the claim link!</span>
-      </div>
-
-      <div style="margin-top:.6vh;padding-top:1.4vh;border-top:1px solid var(--ibm-cg20);display:flex;align-items:center;gap:.9rem;">
-        <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" width="34" height="34" style="flex-shrink:0;">
-          <circle cx="20" cy="26" r="12" fill="rgba(240,171,0,0.15)" stroke="#F0AB00" stroke-width="1.5"/>
-          <polygon points="20,18 22.5,23 28,23.5 24,27 25.5,32.5 20,29.5 14.5,32.5 16,27 12,23.5 17.5,23" fill="#F0AB00" opacity="0.85"/>
-          <rect x="17" y="4" width="6" height="10" rx="2" fill="rgba(240,171,0,0.3)" stroke="#F0AB00" stroke-width="1.2"/>
-          <path d="M17 13 L14 18 M23 13 L26 18" stroke="#F0AB00" stroke-width="1.2" stroke-linecap="round"/>
-        </svg>
-        <div>
-          <div style="font-family:var(--sans);font-size:clamp(.92rem,1.05vw,1.02rem);font-weight:700;color:var(--gold-d);">Your Credly badge is one prompt away.</div>
-          <div class="caption" style="margin-top:.2rem;">Every Bobathon participant who attended earns the badge.</div>
+          <div class="callout callout-green" style="margin-top:.4rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+            <span><strong>All Bobathon attendees earn the badge!</strong> Check your email for the Credly claim link within minutes.</span>
+          </div>
         </div>
       </div>
     </div>
@@ -567,18 +563,18 @@ Your objective:
 <nav id="nav">
   <div class="nav-bottom">
     <span class="nav-brand">IBM Bob</span>
-    <button class="nav-btn" id="btn-prev" title="Previous (←)" onclick="prev()">
+    <button class="nav-btn" id="btn-prev" title="Previous (←)" onclick="stepPrev()">
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
         <path d="M9 2L4 7L9 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
     <div class="nav-dots" id="nav-dots"></div>
-    <button class="nav-btn" id="btn-next" title="Next (→)" onclick="next()">
+    <button class="nav-btn" id="btn-next" title="Next (→)" onclick="stepNext()">
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
         <path d="M5 2L10 7L5 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
     </button>
-    <span class="nav-counter" id="counter">1 / 6</span>
+    <span class="nav-counter" id="counter">Intro</span>
     <span class="nav-sep"></span>
     <button class="nav-btn" id="btn-fs" title="Fullscreen (F)" onclick="toggleFS()">
       <svg width="13" height="13" viewBox="0 0 14 14" fill="none" id="fs-icon">
@@ -589,60 +585,129 @@ Your objective:
 </nav>
 
 <script>
-const TOTAL = 6;
-let current = 1;
+/* ── STEP-BY-STEP PROGRESSION STATE ──
+   States:
+   0: Slide 1 (Intro)
+   1: Slide 2 (Step 1 visible, Step 2 hidden)
+   2: Slide 2 (Step 1 visible, Step 2 revealed)
+   3: Slide 3 (Step 3 visible, Step 4 hidden)
+   4: Slide 3 (Step 3 visible, Step 4 revealed)
+   5: Slide 4 (Step 5 visible, Step 6 hidden)
+   6: Slide 4 (Step 5 visible, Step 6 revealed)
+*/
+const TOTAL_STATES = 7;
+let currentState = 0;
 
-// Build nav dots
+// Build nav dots (one per state / milestone)
 const dotsEl = document.getElementById('nav-dots');
 const grp = document.createElement('div');
 grp.className = 'nav-dot-group';
 dotsEl.appendChild(grp);
-for (let i = 1; i <= TOTAL; i++) {
+for (let i = 0; i < TOTAL_STATES; i++) {
   const d = document.createElement('div');
   d.className = 'nav-dot';
-  d.setAttribute('data-n', i);
-  d.title = 'Slide ' + i;
-  d.addEventListener('click', () => goTo(i));
+  d.setAttribute('data-s', i);
+  d.title = i === 0 ? 'Intro' : 'Step ' + i;
+  d.addEventListener('click', () => setStepState(i));
   grp.appendChild(d);
 }
 
-function goTo(n) {
-  if (n < 1 || n > TOTAL) return;
-  const prevEl = document.querySelector('.slide.active');
-  if (prevEl) {
-    prevEl.classList.remove('active');
-    prevEl.classList.add('exit');
-    setTimeout(() => prevEl.classList.remove('exit'), 420);
+function setStepState(s) {
+  if (s < 0 || s >= TOTAL_STATES) return;
+  currentState = s;
+
+  // Determine which slide to show
+  let targetSlide = 1;
+  if (s === 1 || s === 2) targetSlide = 2;
+  else if (s === 3 || s === 4) targetSlide = 3;
+  else if (s === 5 || s === 6) targetSlide = 4;
+
+  // Switch slides if needed
+  document.querySelectorAll('.slide').forEach((slide, idx) => {
+    const slideNum = idx + 1;
+    if (slideNum === targetSlide) {
+      slide.classList.add('active');
+      slide.classList.remove('exit');
+    } else if (slide.classList.contains('active')) {
+      slide.classList.remove('active');
+      slide.classList.add('exit');
+      setTimeout(() => slide.classList.remove('exit'), 400);
+    }
+  });
+
+  // Reveal panels inside slides
+  const p2 = document.getElementById('step-panel-2');
+  const p4 = document.getElementById('step-panel-4');
+  const p6 = document.getElementById('step-panel-6');
+  
+  if (p2) p2.className = (s >= 2) ? 'step-panel step-visible' : 'step-panel step-hidden';
+  if (p4) p4.className = (s >= 4) ? 'step-panel step-visible' : 'step-panel step-hidden';
+  if (p6) p6.className = (s >= 6) ? 'step-panel step-visible' : 'step-panel step-hidden';
+
+  // Update ticks on Slide 2
+  const t1 = document.getElementById('tick-1');
+  const t2 = document.getElementById('tick-2');
+  if (t1 && t2) {
+    t1.className = s >= 1 ? 'tick done' : 'tick';
+    t2.className = s >= 2 ? 'tick done' : (s === 1 ? 'tick now' : 'tick');
   }
-  current = n;
-  document.getElementById('slide-' + n).classList.add('active');
-  document.getElementById('counter').textContent = n + ' / ' + TOTAL;
+
+  // Update ticks on Slide 3
+  const t3s = document.getElementById('tick-3-status');
+  const t4s = document.getElementById('tick-4-status');
+  if (t3s && t4s) {
+    t3s.className = s >= 3 ? 'tick done' : 'tick';
+    t4s.className = s >= 4 ? 'tick done' : (s === 3 ? 'tick now' : 'tick');
+  }
+
+  // Update ticks on Slide 4
+  const t5s = document.getElementById('tick-5-status');
+  const t6s = document.getElementById('tick-6-status');
+  if (t5s && t6s) {
+    t5s.className = s >= 5 ? 'tick done' : 'tick';
+    t6s.className = s >= 6 ? 'tick done' : (s === 5 ? 'tick now' : 'tick');
+  }
+
+  // Update counter display
+  const counterEl = document.getElementById('counter');
+  if (counterEl) {
+    if (s === 0) counterEl.textContent = 'Intro';
+    else counterEl.textContent = 'Step ' + s + ' / 6';
+  }
+
+  // Update active dot
   document.querySelectorAll('.nav-dot').forEach(d => {
-    d.classList.toggle('active', parseInt(d.getAttribute('data-n')) === n);
+    d.classList.toggle('active', parseInt(d.getAttribute('data-s')) === s);
   });
 }
 
-function next() { if (current < TOTAL) goTo(current + 1); }
-function prev() { if (current > 1)    goTo(current - 1); }
+function stepNext() {
+  if (currentState < TOTAL_STATES - 1) setStepState(currentState + 1);
+}
+
+function stepPrev() {
+  if (currentState > 0) setStepState(currentState - 1);
+}
 
 document.addEventListener('keydown', e => {
-  if (e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();next();}
-  if (e.key==='ArrowLeft' ||e.key==='ArrowUp')              {e.preventDefault();prev();}
-  if (e.key==='Home') goTo(1);
-  if (e.key==='End')  goTo(TOTAL);
-  if (e.key==='f'||e.key==='F') toggleFS();
-  if (e.key==='Escape') exitFS();
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); stepNext(); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); stepPrev(); }
+  if (e.key === 'Home') setStepState(0);
+  if (e.key === 'End')  setStepState(TOTAL_STATES - 1);
+  if (e.key === 'f' || e.key === 'F') toggleFS();
+  if (e.key === 'Escape') exitFS();
 });
 
 let tx = null;
 document.getElementById('deck').addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
 document.getElementById('deck').addEventListener('touchend', e => {
-  if (tx===null) return;
+  if (tx === null) return;
   const dx = e.changedTouches[0].clientX - tx;
-  if (Math.abs(dx) > 44) dx < 0 ? next() : prev();
+  if (Math.abs(dx) > 44) dx < 0 ? stepNext() : stepPrev();
   tx = null;
 });
 
+// Floating nav auto-hide
 let navTimeout = null;
 const NAV_HIDE_MS = 3000;
 const NAV_RADIUS  = 80;
@@ -721,7 +786,7 @@ function updateCountdown() {
   const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
   if (timerText) {
-    timerText.textContent = `Open for: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+    timerText.textContent = `Open: ${days}d ${hours}h ${minutes}m ${seconds}s`;
   }
   return true;
 }
@@ -738,7 +803,7 @@ function toggleApiKey() {
     content.classList.toggle('open', isKeyRevealed);
   }
   if (btnText) {
-    btnText.textContent = isKeyRevealed ? 'Hide Event API Key' : 'Reveal Event API Key';
+    btnText.textContent = isKeyRevealed ? 'Hide Event Key' : 'Reveal Event Key';
   }
 }
 
@@ -755,7 +820,7 @@ function copyInstallPrompt(btn) {
   const promptText = document.getElementById('install-prompt').innerText;
   navigator.clipboard.writeText(promptText).then(() => {
     const orig = btn.innerText;
-    btn.innerText = 'Copied to Clipboard!';
+    btn.innerText = 'Copied!';
     setTimeout(() => { btn.innerText = orig; }, 2000);
   });
 }
@@ -764,7 +829,7 @@ function copyPrompt(btn) {
   const promptText = document.getElementById('badging-prompt').innerText;
   navigator.clipboard.writeText(promptText).then(() => {
     const orig = btn.innerText;
-    btn.innerText = 'Copied to Clipboard!';
+    btn.innerText = 'Copied!';
     setTimeout(() => { btn.innerText = orig; }, 2000);
   });
 }
@@ -772,7 +837,7 @@ function copyPrompt(btn) {
 setInterval(updateCountdown, 1000);
 updateCountdown();
 
-goTo(1);
+setStepState(0);
 showNav();
 </script>
 </body>
