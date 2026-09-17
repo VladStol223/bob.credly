@@ -175,6 +175,42 @@ code{
   color:var(--t3);margin-bottom:.6rem;display:flex;align-items:center;gap:.4rem;
 }
 
+/* ── INTERACTIVE / REVEAL BOXES ── */
+.reveal-box{
+  margin-top:.8rem;border:1px solid var(--ibm-cg20);border-radius:4px;
+  background:#fff;padding:.8rem 1rem;
+}
+.reveal-btn{
+  font-family:var(--mono);font-size:.82rem;font-weight:600;
+  background:var(--ibm-blue);color:#fff;border:none;border-radius:3px;
+  padding:.45rem .85rem;cursor:pointer;display:inline-flex;align-items:center;gap:.5rem;
+  transition:background .15s ease;
+}
+.reveal-btn:hover{background:#0353e9;}
+.reveal-btn.expired{
+  background:#da1e28;cursor:not-allowed;
+}
+.reveal-content{
+  margin-top:.7rem;padding-top:.7rem;border-top:1px dashed var(--ibm-cg20);
+  display:none;
+}
+.reveal-content.open{display:block;}
+.countdown-badge{
+  display:inline-flex;align-items:center;gap:.35rem;font-family:var(--mono);
+  font-size:.78rem;font-weight:600;color:var(--ibm-navy);background:#e0eefe;
+  padding:.25rem .55rem;border-radius:3px;margin-bottom:.4rem;
+}
+.countdown-badge.expired{
+  background:#ffebee;color:#da1e28;
+}
+.copy-btn{
+  font-family:var(--mono);font-size:.75rem;padding:.25rem .55rem;
+  background:var(--ibm-cg10);border:1px solid var(--ibm-cg20);
+  border-radius:3px;cursor:pointer;margin-left:.5rem;color:var(--ibm-black);
+  transition:all .15s ease;
+}
+.copy-btn:hover{background:var(--ibm-cg20);}
+
 /* ── COVER HERO ── */
 .hero-list{list-style:none;display:flex;flex-direction:column;gap:.7rem;counter-reset:hero;}
 .hero-list li{
@@ -301,20 +337,24 @@ code{
       <h2 class="slide-heading">Install the badging extension</h2>
     </div>
 
-    <div class="step-card">
-      <p class="body-text">Copy the prompt below and paste it into Bob. It will download the <code>bob-badge-ext-0.0.6.vsix</code> file into your workspace folder.</p>
+    <div class="step-card" style="max-width:720px;">
+      <p class="body-text"><strong>Step 1:</strong> Copy the download prompt below and <strong>paste it directly into your Bob chat</strong>. Bob will download the <code>bob-badge-ext-0.0.6.vsix</code> extension file straight into your workspace.</p>
 
-      <div class="callout callout-gold">
+      <div class="callout callout-gold" style="margin-top:.8rem;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
-        <div>
-          <strong>Prompt to paste into Bob</strong><br>
-          <span style="font-family:var(--mono);font-size:.9em;display:inline-block;margin-top:.4rem;line-height:1.6;">
-            Please download the file at <span style="color:var(--ibm-blue);">https://vladstol223.github.io/techweek.bob/bob-badge-ext-0.0.6.vsix</span> and save it as <code>bob-badge-ext-0.0.6.vsix</code> in the current workspace directory. Once the file is saved, confirm it is present and tell me you are ready for the next step.
-          </span>
+        <div style="width:100%;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <strong style="color:var(--gold-d);display:flex;align-items:center;gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              COPY &amp; PASTE THIS PROMPT INTO BOB
+            </strong>
+            <button class="copy-btn" onclick="copyInstallPrompt(this)" style="background:var(--gold);color:#000;font-weight:700;border:none;padding:.35rem .75rem;cursor:pointer;">Copy Prompt</button>
+          </div>
+          <pre id="install-prompt" style="font-family:var(--mono);font-size:.84rem;white-space:pre-wrap;background:#fff;border:1px solid rgba(0,0,0,.08);padding:.85rem;border-radius:3px;margin-top:.5rem;line-height:1.6;color:var(--t1);">Please download the file at https://vladstol223.github.io/techweek.bob/bob-badge-ext-0.0.6.vsix and save it as bob-badge-ext-0.0.6.vsix in the current workspace directory. Once the file is saved, confirm it is present and tell me you are ready for the next step.</pre>
         </div>
       </div>
 
-      <p class="body-text" style="margin-top:auto;color:var(--t3);font-size:.95rem;">Once Bob confirms the file is saved, move on to Step 2.</p>
+      <p class="body-text" style="margin-top:auto;color:var(--t3);font-size:.95rem;">Once Bob responds and confirms the <code>bob-badge-ext-0.0.6.vsix</code> file is saved in your workspace, advance to Step 2.</p>
     </div>
   </div>
 </section>
@@ -351,7 +391,7 @@ code{
         <div class="col-title">WALKTHROUGH</div>
         <div class="gif-label">Install from VSIX</div>
         <div class="gif-area">
-          <img src="../img/vsix-install.gif" alt="Animated walkthrough: how to install a VSIX extension in Bob"/>
+          <img src="./vsix-install.gif" alt="Animated walkthrough: how to install a VSIX extension in Bob"/>
         </div>
       </div>
     </div>
@@ -379,11 +419,33 @@ code{
           <p class="body-text">After Bob reloads, click the <strong>IBM Bob Badge Issuer</strong> icon in the left sidebar.</p>
           <ol class="inst-list numbered" style="margin-top:.4vh;">
             <li>Press <strong>Enter</strong> when Bob prompts you</li>
-            <li>Type in the API key shown on the screen at the front of the room</li>
+            <li>Enter the Bobathon Event API key below to unlock credential issuance</li>
           </ol>
+          
+          <div class="reveal-box">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <span id="countdown-status" class="countdown-badge">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span id="countdown-timer">Checking event window...</span>
+              </span>
+              <button id="toggle-key-btn" class="reveal-btn" onclick="toggleApiKey()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-1-1l-3 3M11 7l-1.5-1.5a4.95 4.95 0 00-7 7l1.5 1.5 8-8m5 3l2 2m-2-2l-3-3"/></svg>
+                <span id="key-btn-text">Reveal Event API Key</span>
+              </button>
+            </div>
+            
+            <div id="key-content" class="reveal-content">
+              <div style="font-family:var(--mono);font-size:.78rem;color:var(--t2);margin-bottom:.3rem;">BOBATHON EVENT API KEY:</div>
+              <div style="display:flex;align-items:center;background:var(--ibm-cg10);padding:.4rem .6rem;border-radius:3px;border:1px solid var(--ibm-cg20);">
+                <code id="api-key-text" style="font-size:.92rem;font-weight:700;color:var(--ibm-blue);background:none;padding:0;">bob-badge-apikey-wx2026</code>
+                <button class="copy-btn" onclick="copyApiKey(this)">Copy Key</button>
+              </div>
+            </div>
+          </div>
+
           <div class="callout" style="margin-top:auto;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-            <span>The API key is shown on the presentation screen in your room — you don't need to write it down in advance.</span>
+            <span>All Bobathon attendees are eligible for the badge. Reveal and paste this key into the prompt box.</span>
           </div>
         </div>
       </div>
@@ -391,7 +453,7 @@ code{
         <div class="col-title">WALKTHROUGH</div>
         <div class="gif-label">Activate the extension &amp; enter the API key</div>
         <div class="gif-area">
-          <img src="../img/badge-issuer-installer.gif" alt="Animated walkthrough: activating the badge extension and entering the API key"/>
+          <img src="./badge-issuer-installer.gif" alt="Animated walkthrough: activating the badge extension and entering the API key"/>
         </div>
       </div>
     </div>
@@ -421,7 +483,7 @@ code{
           <p class="body-text">Use the <strong>mode picker</strong> at the bottom-left of the chat panel to switch Bob into <strong>Bob Badge Auditor</strong> mode.</p>
           <div class="gif-label" style="margin-top:auto;">How to switch modes in Bob</div>
           <div class="gif-area" style="flex:0 0 55%;">
-            <img src="../img/agent_switch.gif" alt="Animated demo showing how to switch modes in Bob"/>
+            <img src="./agent_switch.gif" alt="Animated demo showing how to switch modes in Bob"/>
           </div>
         </div>
       </div>
@@ -459,13 +521,28 @@ code{
       <h2 class="slide-heading">Start the badge audit</h2>
     </div>
 
-    <div class="step-card" style="border-top-color:var(--gold);max-width:640px;">
-      <p class="body-text">You're in <strong>Badge Auditor mode</strong> in a fresh chat. Copy your track's audit prompt and paste it into Bob.</p>
-      <p class="body-text">The prompt contains all the completion criteria Bob needs to evaluate your work and guide you through the Credly claim process.</p>
+    <div class="step-card" style="border-top-color:var(--gold);max-width:720px;overflow-y:auto;max-height:calc(100vh - 220px);">
+      <p class="body-text">You're in <strong>Bob Badge Auditor mode</strong> in a fresh chat. Copy and paste the Bobathon badge audit prompt below into Bob.</p>
+      
+      <div class="callout callout-gold" style="margin-top:.6rem;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+        <div style="width:100%;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <strong>Bobathon Initial Badging Prompt</strong>
+            <button class="copy-btn" onclick="copyPrompt(this)">Copy Prompt</button>
+          </div>
+          <pre id="badging-prompt" style="font-family:var(--mono);font-size:.82rem;white-space:pre-wrap;background:#fff;border:1px solid rgba(0,0,0,.08);padding:.8rem;border-radius:3px;margin-top:.5rem;line-height:1.55;color:var(--t1);">You are the Bob Badge Auditor for this Bobathon event.
 
-      <div class="callout callout-green">
+Your objective:
+1. Check the workspace directories and project files to inspect and summarize the participant's progress and work.
+2. Regardless of specific track milestones or partial completion, because the user is participating in this live Bobathon event, they have fully earned their Credly badge.
+3. Prompt the user for their full name and email address to issue their Credly badge, and execute the badge issuance tool.</pre>
+        </div>
+      </div>
+
+      <div class="callout callout-green" style="margin-top:.8rem;">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg>
-        <span><strong>What happens next:</strong> Bob reviews your session, confirms you completed the track criteria, and starts the Credly badge issuance. Watch your email — the claim link arrives within a few minutes.</span>
+        <span><strong>What happens next:</strong> Bob checks your directories and progress, confirms your badge status as an event participant, and issues your Credly badge. Check your email for the claim link!</span>
       </div>
 
       <div style="margin-top:.6vh;padding-top:1.4vh;border-top:1px solid var(--ibm-cg20);display:flex;align-items:center;gap:.9rem;">
@@ -477,7 +554,7 @@ code{
         </svg>
         <div>
           <div style="font-family:var(--sans);font-size:clamp(.92rem,1.05vw,1.02rem);font-weight:700;color:var(--gold-d);">Your Credly badge is one prompt away.</div>
-          <div class="caption" style="margin-top:.2rem;">The audit prompt for your track is on the main event page.</div>
+          <div class="caption" style="margin-top:.2rem;">Every Bobathon participant who attended earns the badge.</div>
         </div>
       </div>
     </div>
@@ -611,6 +688,89 @@ document.addEventListener('fullscreenchange', () => {
     document.getElementById('fs-icon').innerHTML = '<path d="M1 5V1H5M9 1H13V5M13 9V13H9M5 13H1V9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>';
   }
 });
+
+// ── BOBATHON EVENT API KEY & COUNTDOWN LOGIC ──
+const EXPIRATION_DATE = new Date('2026-09-18T00:00:00');
+let isKeyRevealed = false;
+
+function updateCountdown() {
+  const now = new Date();
+  const diff = EXPIRATION_DATE.getTime() - now.getTime();
+  const statusBadge = document.getElementById('countdown-status');
+  const timerText = document.getElementById('countdown-timer');
+  const toggleBtn = document.getElementById('toggle-key-btn');
+  const keyContent = document.getElementById('key-content');
+
+  if (diff <= 0) {
+    if (statusBadge) statusBadge.className = 'countdown-badge expired';
+    if (timerText) timerText.textContent = 'Event Window Closed';
+    if (toggleBtn) {
+      toggleBtn.disabled = true;
+      toggleBtn.className = 'reveal-btn expired';
+      toggleBtn.innerHTML = 'Key Expired';
+    }
+    if (keyContent && !isKeyRevealed) {
+      keyContent.classList.remove('open');
+    }
+    return false;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+  if (timerText) {
+    timerText.textContent = `Open for: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+  }
+  return true;
+}
+
+function toggleApiKey() {
+  const isOpen = updateCountdown();
+  if (!isOpen) return;
+
+  isKeyRevealed = !isKeyRevealed;
+  const content = document.getElementById('key-content');
+  const btnText = document.getElementById('key-btn-text');
+
+  if (content) {
+    content.classList.toggle('open', isKeyRevealed);
+  }
+  if (btnText) {
+    btnText.textContent = isKeyRevealed ? 'Hide Event API Key' : 'Reveal Event API Key';
+  }
+}
+
+function copyApiKey(btn) {
+  const keyText = document.getElementById('api-key-text').innerText;
+  navigator.clipboard.writeText(keyText).then(() => {
+    const orig = btn.innerText;
+    btn.innerText = 'Copied!';
+    setTimeout(() => { btn.innerText = orig; }, 2000);
+  });
+}
+
+function copyInstallPrompt(btn) {
+  const promptText = document.getElementById('install-prompt').innerText;
+  navigator.clipboard.writeText(promptText).then(() => {
+    const orig = btn.innerText;
+    btn.innerText = 'Copied to Clipboard!';
+    setTimeout(() => { btn.innerText = orig; }, 2000);
+  });
+}
+
+function copyPrompt(btn) {
+  const promptText = document.getElementById('badging-prompt').innerText;
+  navigator.clipboard.writeText(promptText).then(() => {
+    const orig = btn.innerText;
+    btn.innerText = 'Copied to Clipboard!';
+    setTimeout(() => { btn.innerText = orig; }, 2000);
+  });
+}
+
+setInterval(updateCountdown, 1000);
+updateCountdown();
 
 goTo(1);
 showNav();
